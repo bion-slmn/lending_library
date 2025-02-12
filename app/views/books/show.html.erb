@@ -1,0 +1,17 @@
+<div class="container mx-auto p-8">
+  <div class="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+    <div class="p-6">
+      <h2 class="text-2xl font-bold mb-4 text-center"><%= @book.title %></h2>
+      <p class="mb-2"><strong>Author:</strong> <%= @book.author %></p>
+      <p class="mb-2"><strong>ISBN:</strong> <%= @book.isbn %></p>
+      <p class="mb-4"><strong>Status:</strong> <%= @book.status %></p>
+      <div class="text-center">
+        <% if @book.status == "available" %>
+          <%= button_to "Borrow", borrowings_create_path(@book), method: :post, class: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" %>
+        <% else %>
+          <button disabled class="bg-gray-400 text-white font-bold py-2 px-4 rounded">Not Available</button>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
