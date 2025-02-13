@@ -7,7 +7,7 @@
       <p class="mb-4"><strong>Status:</strong> <%= @book.status %></p>
       <div class="text-center">
         <% if @book.status == "available" %>
-          <%= button_to "Borrow", borrowings_create_path(@book), method: :post, class: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" %>
+          <%= button_to "Borrow", book_borrowings_path(@book), method: :post, class: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" %>
         <% else %>
           <button disabled class="bg-gray-400 text-white font-bold py-2 px-4 rounded">Not Available</button>
         <% end %>

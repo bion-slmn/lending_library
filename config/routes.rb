@@ -1,10 +1,14 @@
 Rails.application.routes.draw do
-  get "borrowings/create"
-  get "borrowings/update"
-  resources :books, only: [:index, :show]
+  resources :borrowings, only: [:index, :destroy]
+  
+  resources :books, only: [:index, :show] do
+    resources :borrowings, only: [:create]
+  end
+
   resources :users, only: [:new, :create]
-  resource :session
+  resource :session, only: [:new, :create, :destroy]
   resources :passwords, param: :token
+
   root "libraries#show"
   get "my_library", to: "libraries#show", as: "my_library"
 end
