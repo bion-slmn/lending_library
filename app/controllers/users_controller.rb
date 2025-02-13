@@ -12,7 +12,12 @@ class UsersController < ApplicationController
     else
       render :new, status: :unprocessable_entity
     end
+  rescue ActiveRecord::RecordNotUnique
+    flash.now[:alert] = "Email already exists. Please use a different email."
+    render :new, status: :unprocessable_entity
   end
+  
+  
 
   private
 

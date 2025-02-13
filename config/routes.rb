@@ -11,4 +11,6 @@ Rails.application.routes.draw do
 
   root "libraries#show"
   get "my_library", to: "libraries#show", as: "my_library"
+
+  match "*path", to: "errors#not_found", via: :all
 end
