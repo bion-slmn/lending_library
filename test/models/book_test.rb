@@ -1,24 +1,34 @@
-# spec/models/book_spec.rb
-require 'rails_helper'
+# test/models/book_test.rb
+require "test_helper"
 
-RSpec.describe Book, type: :model do
-  describe "associations" do
-    it { should have_many(:borrowings) }
-    it { should have_many(:users).through(:borrowings) }
+class BookTest < ActiveSupport::TestCase
+  def setup
+    @book = Book.new(title: "Test Book", author: "John Doe", isbn: "123-456-789")
   end
 
-  describe "validations" do
-    it { should validate_presence_of(:title) }
-    it { should validate_presence_of(:author) }
-    it { should validate_presence_of(:isbn) }
-    it { should validate_uniqueness_of(:isbn) }
+  test "associations" do
+    assert_respond_to @book, :borrowings
+    assert_respond_to @book, :users
   end
 
-  describe "instance methods" do
-    let(:book) { Book.create(title: "Test Book", author: "John Doe", isbn: "123-456-789") }
+  test "validations" do
+    @book.title = nil
+    assert_not @book.valid?, "Book is valid without a title"
 
-    it "initially has a nil status" do
-      expect(book.status).to be_nil
-    end
+    @book.author = nil
+    assert_not @book.valid?, "Book is valid without an author"
+
+    @book.isbn = nil
+    assert_not @book.valid?, "Book is valid without an ISBN"
+  end
+
+  test "isbn should be unique" do
+    @book.save
+    duplicate_book = @book.dup
+    assert_not duplicate_book.valid?, "Book is valid with a duplicate ISBN"
+  end
+
+  test "instance method: status is initially nil" do
+    assert_nil @book.status
   end
 end

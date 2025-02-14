@@ -1,28 +1,24 @@
-# spec/models/borrowing_spec.rb
-require 'rails_helper'
+# test/models/borrowing_test.rb
+require "test_helper"
 
-RSpec.describe Borrowing, type: :model do
-  describe "associations" do
-    it { should belong_to(:user) }
-    it { should belong_to(:book) }
+class BorrowingTest < ActiveSupport::TestCase
+  def setup
+    @user = User.create(email_address: "user@example.com", password: "password123")
+    @book = Book.create(title: "Sample Book", author: "John Doe", isbn: "123-456-789")
+    @borrowing = Borrowing.new(user: @user, book: @book, due_date: Date.today + 7.days)
   end
 
-  describe "validations" do
-    it { should validate_presence_of(:due_date) }
+  test "associations" do
+    assert_respond_to @borrowing, :user
+    assert_respond_to @borrowing, :book
   end
 
-  describe "custom logic" do
-    let(:user) { User.create(email_address: "user@example.com", password: "password123") }
-    let(:book) { Book.create(title: "Sample Book", author: "John Doe", isbn: "123-456-789") }
-    let(:borrowing) { Borrowing.create(user: user, book: book, due_date: Date.today + 7.days) }
+  test "is valid with valid attributes" do
+    assert @borrowing.valid?, "Borrowing should be valid with valid attributes"
+  end
 
-    it "is valid with valid attributes" do
-      expect(borrowing).to be_valid
-    end
-
-    it "is not valid without a due date" do
-      borrowing.due_date = nil
-      expect(borrowing).not_to be_valid
-    end
+  test "is not valid without a due date" do
+    @borrowing.due_date = nil
+    assert_not @borrowing.valid?, "Borrowing should not be valid without a due date"
   end
 end

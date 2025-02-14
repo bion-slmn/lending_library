@@ -1,6 +1,3 @@
-Here’s a detailed `README.md` file for your Ruby on Rails 8 book lending library application:
-
----
 
 # 📚 Book Lending Library Application
 
