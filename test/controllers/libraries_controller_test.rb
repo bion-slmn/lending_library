@@ -10,5 +10,4 @@ class LibrariesControllerTest < ActionDispatch::IntegrationTest
     get my_library_url
     assert_response :success
   end
-
 end

@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class BorrowingsControllerTest < ActionDispatch::IntegrationTest
   setup do
@@ -31,7 +31,7 @@ class BorrowingsControllerTest < ActionDispatch::IntegrationTest
     assert_response :redirect
     assert_redirected_to new_session_url
   end
-  
+
   private
 
   def sign_in(user)

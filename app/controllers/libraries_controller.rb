@@ -1,5 +1,5 @@
 class LibrariesController < ApplicationController
     allow_unauthenticated_access
-    def show 
+    def show
     end
 end

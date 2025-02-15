@@ -1,12 +1,12 @@
 Rails.application.routes.draw do
-  resources :borrowings, only: [:index, :destroy]
-  
-  resources :books, only: [:index, :show] do
-    resources :borrowings, only: [:create]
+  resources :borrowings, only: [ :index, :destroy ]
+
+  resources :books, only: [ :index, :show ] do
+    resources :borrowings, only: [ :create ]
   end
 
-  resources :users, only: [:new, :create]
-  resource :session, only: [:new, :create, :destroy]
+  resources :users, only: [ :new, :create ]
+  resource :session, only: [ :new, :create, :destroy ]
   resources :passwords, param: :token
 
   root "libraries#show"

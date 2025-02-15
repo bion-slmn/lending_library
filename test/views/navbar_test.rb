@@ -12,7 +12,7 @@ class NavigationBarTest < ActionDispatch::SystemTestCase
   end
 
 
-   
+
 
   test "displays navigation links for 'My Library', 'All Books', and 'Borrowed Books'" do
     visit root_path

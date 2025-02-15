@@ -16,14 +16,12 @@ class UsersController < ApplicationController
     flash.now[:alert] = "Email already exists. Please use a different email."
     render :new, status: :unprocessable_entity
   end
-  
-  
+
+
 
   private
 
   def user_params
     params.require(:user).permit(:email_address, :password, :password_confirmation)
-
   end
 end
-

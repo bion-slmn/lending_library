@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class BooksControllerTest < ActionDispatch::IntegrationTest
   setup do
@@ -18,7 +18,7 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
     get book_url(@book)
     assert_response :success
   end
-  
+
   # ❌ Test for non-authenticated user
   test "should redirect index when not authenticated" do
     get books_url
