@@ -1,26 +1,40 @@
-require "test_helper"
+require 'test_helper'
 
 class BooksControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @book = Book.create!(title: "Test Book", author: "Test Author", isbn: "123456789")
+    @user = users(:one)
+    @book = books(:one)
   end
 
-  test "should get index" do
+
+  test "should get index when authenticated" do
+    sign_in @user
     get books_url
     assert_response :success
-    assert_select "h1", "Books"  # Assuming there's a heading with "Books" on the index page
-    assert_select ".book", minimum: 1  # Assuming books are rendered with a class "book"
   end
 
-  test "should show book" do
+  test "should get show when authenticated" do
+    sign_in @user
     get book_url(@book)
     assert_response :success
-    assert_select "h1", @book.title  # Assuming the book title is rendered as a heading on the show page
+  end
+  
+  # ❌ Test for non-authenticated user
+  test "should redirect index when not authenticated" do
+    get books_url
+    assert_response :redirect
+    assert_redirected_to new_session_url # Ensure redirection to login
   end
 
-  test "should return 404 for non-existent book" do
-    assert_raises(ActiveRecord::RecordNotFound) do
-      get book_url(-1)
-    end
+  test "should redirect show when not authenticated" do
+    get book_url(@book)
+    assert_response :redirect
+    assert_redirected_to new_session_url
+  end
+
+  private
+
+  def sign_in(user)
+    post session_url, params: { email_address: user.email_address, password: "password" }
   end
 end

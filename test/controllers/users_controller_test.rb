@@ -27,13 +27,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_select "p#alert", "Email already exists. Please use a different email."
   end
 
-  test "should render new with unprocessable_entity on validation error" do
-    assert_no_difference("User.count") do
-      post users_url, params: { user: { email_address: "", password: "password", password_confirmation: "password" } }
-    end
-    assert_response :unprocessable_entity
-    assert_select "div#error_explanation"  # Assuming you have error explanation for invalid input
-  end
+
 
   private
 

@@ -1,13 +1,14 @@
 require "test_helper"
 
 class LibrariesControllerTest < ActionDispatch::IntegrationTest
-  test "should get show" do
-    get library_url(id: 1)  # Assuming an ID of 1 for the library
+  test "should get show at root path" do
+    get root_url
     assert_response :success
   end
 
-  test "should render show template" do
-    get library_url(id: 1)
-    assert_template :show
+  test "should get show at my_library path" do
+    get my_library_url
+    assert_response :success
   end
+
 end
