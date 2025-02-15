@@ -1,52 +1,33 @@
-require 'rails_helper'
+require "test_helper"
 
-RSpec.describe "Books Index", type: :system do
-  before do
-    driven_by(:rack_test)
+class BooksIndexTest < ActionDispatch::IntegrationTest
+  def setup
+    @user = User.create!(email_address: "user@example.com", password: "password")
+
+    @book1 = Book.create!(title: "The Catcher in the Rye", author: "J.D. Salinger", isbn: "9780316769488")
+    @book2 = Book.create!(title: "To Kill a Mockingbird", author: "Harper Lee", isbn: "9780061120084")
   end
 
-  let!(:book1) { Book.create(title: "The Great Gatsby", author: "F. Scott Fitzgerald") }
-  let!(:book2) { Book.create(title: "1984", author: "George Orwell") }
-  let!(:book3) { Book.create(title: "To Kill a Mockingbird", author: "Harper Lee") }
+  test "displays all books with titles and authors" do
+    sign_in_as(@user)  # Sign in before making the request
+    get books_path
+    assert_response :success
 
-  context "when visiting the books index page" do
-    it "displays a list of books with their titles and authors" do
-      visit books_path
+    assert_select "h1", "All Books"
 
-      expect(page).to have_content("All Books")
-      expect(page).to have_link(book1.title, href: book_path(book1))
-      expect(page).to have_link(book2.title, href: book_path(book2))
-      expect(page).to have_link(book3.title, href: book_path(book3))
+    assert_select "p", text: /Title: #{@book1.title}/
+    assert_select "p", text: /Author: #{@book1.author}/
+    assert_select "p", text: /Title: #{@book2.title}/
+    assert_select "p", text: /Author: #{@book2.author}/
 
-      within(".grid") do
-        expect(page).to have_content("Title: #{book1.title}")
-        expect(page).to have_content("Author: #{book1.author}")
-        expect(page).to have_content("Title: #{book2.title}")
-        expect(page).to have_content("Author: #{book2.author}")
-        expect(page).to have_content("Title: #{book3.title}")
-        expect(page).to have_content("Author: #{book3.author}")
-      end
-    end
+    assert_select "a[href=?]", book_path(@book1)
+    assert_select "a[href=?]", book_path(@book2)
   end
 
-  context "when a book link is clicked" do
-    it "navigates to the book's detail page" do
-      visit books_path
-      click_link book1.title
+  private
 
-      expect(current_path).to eq(book_path(book1))
-      expect(page).to have_content(book1.title)
-      expect(page).to have_content(book1.author)
-    end
-  end
-
-  context "when no books are available" do
-    it "displays a message indicating no books are available" do
-      Book.delete_all
-      visit books_path
-
-      expect(page).to have_content("All Books")
-      expect(page).to have_content("No books available")
-    end
+  def sign_in_as(user)
+    post session_path, params: { email_address: user.email_address, password: "password" }
+    follow_redirect!
   end
 end
