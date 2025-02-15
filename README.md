@@ -58,7 +58,7 @@ The seed file creates:
 ### 5. Start the Rails Server
 Run the server:
 ```bash
-rails server
+./bin/dev
 ```
 Visit `http://localhost:3000` to access the application.
 
